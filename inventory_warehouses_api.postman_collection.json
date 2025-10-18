@@ -1,0 +1,396 @@
+{
+	"info": {
+		"_postman_id": "af65e4f4-e658-4b74-b19d-7df10e1c7d92",
+		"name": "inventory_warehouses_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "35946313",
+		"_collection_link": "https://verse0.postman.co/workspace/73ecc403-f249-4288-8400-f38fb2c5a5f1/collection/35946313-af65e4f4-e658-4b74-b19d-7df10e1c7d92?action=share&source=collection_link&creator=35946313"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"mohamed\",\r\n    \"email\" : \"mohamed@email.com\",\r\n    \"password\" : \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", res.data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\"  : \"mohamed@email.com\",\r\n    \"password\" : \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{base_url}}/api/auth/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "inventory",
+			"item": [
+				{
+					"name": "list-products-inventory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/inventory "
+					},
+					"response": []
+				},
+				{
+					"name": "add-new-product-in-inventory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Laptop\",\r\n    \"sku\": \"SKU-1234\",\r\n    \"description\": \"High performance laptop\",\r\n    \"price\": 2200,\r\n    \"min_stock_level\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/inventory"
+					},
+					"response": []
+				},
+				{
+					"name": "show-speific-product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/inventory/1"
+					},
+					"response": []
+				},
+				{
+					"name": "delete-speific-product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/inventory/1"
+					},
+					"response": []
+				},
+				{
+					"name": "update-specific-product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Laptop Lenovo GEN2\",\r\n    \"price\": 2600\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/inventory/1"
+					},
+					"response": []
+				},
+				{
+					"name": "get-statsticis",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/inventory/1/stats"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "warehouses",
+			"item": [
+				{
+					"name": "list-warehouses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/warehouses"
+					},
+					"response": []
+				},
+				{
+					"name": "add-warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Warehouse Cairo\",\r\n    \"location\": \"Cairo, Egypt\",\r\n    \"capacity\": 5000,\r\n    \"manager_name\": \"Mohamed Manager\",\r\n    \"phone\": \"+201234500000\",\r\n    \"is_active\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/warehouses"
+					},
+					"response": []
+				},
+				{
+					"name": "show-specific-warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/warehouses/{id} "
+					},
+					"response": []
+				},
+				{
+					"name": "udpate-warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location\": \"Giza, Egypt\",\r\n    \"manager_name\": \"Mohamed El Giza\",\r\n    \"is_active\": false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/warehouses/1"
+					},
+					"response": []
+				},
+				{
+					"name": "delete-warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/warehouses/{id}"
+					},
+					"response": []
+				},
+				{
+					"name": "get-inventory-for-every-warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/warehouses/{id}/inventory"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stock-transfers",
+			"item": [
+				{
+					"name": "add-stock-transfer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"from_warehouse_id\": 1,\r\n    \"to_warehouse_id\": 2,\r\n    \"inventory_item_id\": 5,\r\n    \"quantity\": 50,\r\n    \"notes\": \"Monthly stock transfer\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/api/stock-transfers"
+					},
+					"response": []
+				},
+				{
+					"name": "list-stock-transfers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/stock-transfers "
+					},
+					"response": []
+				},
+				{
+					"name": "stock-transfers-statistics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/stock-transfers/stats"
+					},
+					"response": []
+				},
+				{
+					"name": "stock-transfer-details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/stock-transfers/{id}"
+					},
+					"response": []
+				},
+				{
+					"name": "cancel-stock-transfer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{base_url}}/api/stock-transfers/1/cancel"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
