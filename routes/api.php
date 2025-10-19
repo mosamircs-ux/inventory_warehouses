@@ -17,7 +17,18 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
 Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
 
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
+        Route::get('me', 'me');
+        Route::put('profile', 'updateProfile');
+        Route::post('change-password', 'changePassword');
+        
         Route::post('logout', 'logout');
+        Route::post('logout-all', 'logoutAll');
+        Route::post('logout-others', 'logoutOthers');
+        
+        Route::get('devices', 'devices');
+        Route::delete('devices/{tokenId}', 'revokeDevice');
+        
+        Route::post('refresh-token', 'refreshToken');
     });
 
     Route::get('inventory/{inventoryItem}/stats', [InventoryItemController::class, 'stats']);

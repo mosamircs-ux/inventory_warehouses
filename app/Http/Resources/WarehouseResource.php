@@ -8,9 +8,6 @@ use App\Http\Resources\WarehouseStockResource; // لتفصيل المنتجات 
 
 class WarehouseResource extends JsonResource
 {
-    /**
-     * تحويل المصدر إلى array/JSON
-     */
     public function toArray(Request $request): array
     {
         return [

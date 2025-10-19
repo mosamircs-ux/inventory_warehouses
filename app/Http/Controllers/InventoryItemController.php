@@ -39,7 +39,7 @@ class InventoryItemController extends Controller
 
         $sortBy = $request->get('sort_by', 'created_at');
         $sortOrder = $request->get('sort_order', 'desc');
-        
+
         $query->orderBy($sortBy, $sortOrder);
 
         $perPage = $request->get('per_page', 15);
@@ -58,9 +58,9 @@ class InventoryItemController extends Controller
         ]);
     }
 
-    public function store(StoreInventoryItemRequest  $request)
+    public function store(Request  $request)
     {
-        $item = InventoryItem::create($request->validated());
+        $item = InventoryItem::create($request->all());
 
         return response()->json([
             'success' => true,
@@ -69,13 +69,12 @@ class InventoryItemController extends Controller
         ], 201);
     }
 
-    public function show(InventoryItem  $inventoryItem)
+    public function show($inventoryItem)
     {
-        $inventoryItem->load(['stocks.warehouse']);
-
+        $item = InventoryItem::find($inventoryItem);
         return response()->json([
             'success' => true,
-            'data' => new InventoryItemResource($inventoryItem)
+            'data' => new InventoryItemResource($item)
         ]);
     }
 
@@ -90,23 +89,18 @@ class InventoryItemController extends Controller
         ]);
     }
 
-    public function destroy(InventoryItem $inventoryItem)
+    public function destroy($inventoryItem)
     {
-        if ($inventoryItem->stocks()->where('quantity', '>', 0)->exists()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'لا يمكن حذف المنتج لأنه يحتوي على مخزون في المستودعات'
-            ], 422);
-        }
+        $item = InventoryItem::find($inventoryItem);
 
-        $inventoryItem->delete();
+        $item->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'تم حذف المنتج بنجاح'      
+            'message' => 'تم حذف المنتج بنجاح'
         ], 200);
     }
-    
+
     public function stats(InventoryItem $inventoryItem)
     {
         $stats = [

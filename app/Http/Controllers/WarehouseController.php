@@ -18,7 +18,7 @@ class WarehouseController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('location', 'like', '%' . $request->search . '%');
+                    ->orWhere('location', 'like', '%' . $request->search . '%');
             });
         }
 
